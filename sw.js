@@ -1,4 +1,4 @@
-const CACHE_NAME = 'yatra-ui-v5';
+const CACHE_NAME = 'rohwingo-ui-v3';
 const ASSETS = [
   './',
   'index.html',
