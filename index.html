@@ -6,10 +6,13 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#0F2438">
 <title>Yatra: shared trip spending</title>
+
+<!-- PWA Manifest and Icons -->
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
@@ -1112,6 +1115,7 @@
       '<div class="row2"><label class="field"><span>Currency</span><select id="sCur">' + currencyOptions(t.currency) + '</select></label>' +
       '<label class="field"><span>Daily budget</span><input id="sBud" type="number" inputmode="decimal" min="0" step="any" placeholder="None" value="' + (t.budget > 0 ? t.budget : "") + '"></label></div>' +
       '<p class="err" id="sErr" role="alert"></p><button class="btn full" type="button" id="sGo">Save changes</button>' +
+      '<button class="btn ghost full" type="button" id="sExport">Export Expenses (CSV)</button>' +
       (isOwner(t) ? '<button class="btn ghost full" type="button" id="sDel">Delete this trip</button>' : ""),
       function () {
         $("sGo").addEventListener("click", async function () {
@@ -1122,6 +1126,23 @@
           var ok = await run(function () { return store.saveTrip(nt); });
           if (ok) { closeSheet(); render(); }
         });
+        
+        var exp = $("sExport");
+        if (exp) exp.addEventListener("click", function() {
+          var it = itemsOf(t.id);
+          var rows = [["Date", "Category", "Amount", "Note", "Place"]];
+          var exps = it.expenses.slice().sort(function(a, b) { return a.ts - b.ts; });
+          exps.forEach(function(e) {
+            rows.push([e.date, e.cat, e.amount, e.note || "", e.place || ""]);
+          });
+          var csv = rows.map(function(r) { return r.map(function(c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(","); }).join("\n");
+          var blob = new Blob([csv], { type: "text/csv" });
+          var a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = t.name.replace(/\s+/g, "_") + "_Expenses.csv";
+          a.click();
+        });
+
         var del = $("sDel");
         if (del) del.addEventListener("click", async function () {
           if (!armed) { armed = true; del.textContent = "Tap again to delete for everyone"; del.classList.remove("ghost"); del.classList.add("danger"); return; }
@@ -1297,4 +1318,6 @@
   boot();
   window.__yatra = { S: S, settle: settle, parseCoords: parseCoords, mapSvg: mapSvg };
 })();
-</script></body></html>
+</script>
+</body>
+</html>
