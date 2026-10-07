@@ -784,7 +784,7 @@
 
   function renderBar() {
     var bar = $("bar");
-    var chipLive = false, chipTxt = "This device only";
+    var chipLive = false, chipTxt = "This device";
     if (S.mode === "cloud") {
       if (S.linked && S.online !== false && !S.pending) { chipLive = true; chipTxt = "Synced"; }
       else if (S.pending) { chipTxt = "Saved on phone · " + S.pending + " to sync"; }
