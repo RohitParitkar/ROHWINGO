@@ -1,4 +1,4 @@
-const CACHE_NAME = 'yatra-ui-v4';
+const CACHE_NAME = 'yatra-ui-v5';
 const ASSETS = [
   './',
   'index.html',
