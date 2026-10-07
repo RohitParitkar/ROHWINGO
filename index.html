@@ -116,9 +116,9 @@
   .tickets { display: grid; gap: 14px; margin-top: 18px; }
 
   .ticket {
-    --stub: 116px;
+    --stub: 136px;
     position: relative; display: grid; grid-template-columns: 1fr var(--stub);
-    width: 100%; padding: 0; text-align: left; cursor: pointer;
+    width: 100%; padding: 0; text-align: left;
     background: var(--card); border: 0; border-radius: 18px; overflow: hidden;
     box-shadow: 0 1px 0 var(--line), 0 10px 22px -16px rgba(15, 36, 56, 0.55);
   }
@@ -133,12 +133,12 @@
   }
   .ticket::before { top: -9px; }
   .ticket::after { bottom: -9px; }
-  .t-main { display: grid; gap: 8px; padding: 16px 14px 16px 22px; border-left: 12px solid var(--tc); min-width: 0; }
+  .t-main { display: grid; gap: 8px; padding: 16px 14px 16px 22px; border-left: 12px solid var(--tc); min-width: 0; cursor: pointer; }
   .t-name { font-family: var(--display); font-weight: 750; font-size: 1.3rem; line-height: 1.15; letter-spacing: -0.01em; overflow-wrap: anywhere; }
   .t-meta { color: var(--ink-2); font-size: 0.92rem; }
-  .t-stub { display: grid; align-content: center; justify-items: end; gap: 2px; padding: 12px 14px; border-left: 2px dashed var(--line); text-align: right; }
+  .t-stub { display: grid; align-content: center; justify-items: end; gap: 2px; padding: 12px 14px; border-left: 2px dashed var(--line); text-align: right; cursor: pointer; }
   .t-stub-label { color: var(--ink-2); font-size: 0.85rem; }
-  .t-total { font-family: var(--display); font-weight: 750; font-size: 1.15rem; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .t-total { font-family: var(--display); font-weight: 750; font-size: clamp(1rem, 4vw, 1.15rem); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   .faces { display: flex; }
   .faces .av { margin-left: -8px; border: 2px solid var(--card); }
@@ -177,8 +177,8 @@
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); margin: 18px 0 6px; }
   .stats > div { padding: 0 12px; border-left: 1px solid var(--line); min-width: 0; }
   .stats > div:first-child { padding-left: 0; border-left: 0; }
-  .stats dt { font-size: 0.85rem; color: var(--ink-2); }
-  .stats dd { margin: 0; font-family: var(--display); font-weight: 700; font-size: 1.2rem; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+  .stats dt { font-size: 0.85rem; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stats dd { margin: 0; font-family: var(--display); font-weight: 700; font-size: clamp(1rem, 4.5vw, 1.2rem); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
   h2.sec { margin: 22px 0 10px; font-family: var(--display); font-size: 1.2rem; font-weight: 750; letter-spacing: -0.005em; }
 
@@ -372,6 +372,7 @@
     split: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="5.5"/><circle cx="15" cy="12" r="5.5"/></svg>',
     people: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3.3 2.8-5 5.5-5s4.9 1.7 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.2c2.3-.2 4 1.3 4.5 4"/></svg>',
     pin: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>',
+    share: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>',
     mark: '<svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="28" height="18" rx="5" style="fill:var(--t0)"/><circle cx="21" cy="7" r="3" style="fill:var(--paper)"/><circle cx="21" cy="25" r="3" style="fill:var(--paper)"/><path d="M21 10v3M21 15.5v2M21 20v2" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><path d="M8 17c3-6 7-6 9-2" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="1 3.2"/></svg>'
   };
 
@@ -595,7 +596,6 @@
     };
   }
 
-
   /* ================= offline-first layer =================
      Every change is written to this phone's storage first, then sent to the cloud when a connection exists.
      Offline, the app reads and writes only the phone copy and keeps a queue of changes to send later. */
@@ -791,7 +791,7 @@
     if (S.view === "trip" && tripById(S.tripId)) {
       var t = tripById(S.tripId);
       bar.innerHTML = '<button class="icon-btn back" type="button" data-act="home" aria-label="Back to all trips">' + ICON.back + "<span>Trips</span></button>" +
-        '<span class="bar-title">' + esc(t.name) + '</span><span class="bar-side">' + chip + "</span>";
+        '<span class="bar-title">' + esc(t.name) + '</span><span class="bar-side">' + chip + '<button class="icon-btn" style="margin-left:4px" type="button" data-act="shareTrip" data-id="' + esc(t.id) + '" aria-label="Share Trip">' + ICON.share + '</button></span>';
     } else {
       bar.innerHTML = '<span class="brand">' + ICON.mark + "Yatra</span>" +
         '<span class="bar-side">' + chip + '<button class="icon-btn" type="button" data-act="tour" aria-label="How Yatra works">' + ICON.help + "</button></span>";
@@ -809,11 +809,16 @@
     h += '<div class="tickets">' + S.trips.map(function (t) {
       var it = itemsOf(t.id);
       var total = sum(it.expenses);
-      return '<button class="ticket" type="button" data-act="openTrip" data-id="' + esc(t.id) + '" data-c="' + t.color + '">' +
-        '<span class="t-main"><span class="t-name">' + esc(t.name) + '</span>' +
+      return '<div class="ticket" data-c="' + t.color + '">' +
+        '<div class="t-main" role="button" tabindex="0" data-act="openTrip" data-id="' + esc(t.id) + '">' +
+        '<div style="display:flex; justify-content:space-between; align-items:start">' +
+        '<span class="t-name">' + esc(t.name) + '</span>' +
+        '<button class="icon-btn" style="min-width:32px;min-height:32px;padding:4px;margin:-4px -4px 0 0;color:var(--ink-2)" type="button" data-act="shareTrip" data-id="' + esc(t.id) + '" aria-label="Share">' + ICON.share + '</button>' +
+        '</div>' +
         '<span class="faces">' + t.people.slice(0, 5).map(function (p) { return avatar(p); }).join("") + "</span>" +
-        '<span class="t-meta">' + t.people.length + (t.people.length === 1 ? " person" : " people") + "</span></span>" +
-        '<span class="t-stub"><span class="t-stub-label">Spent</span><span class="t-total">' + esc(money(total, t.currency)) + "</span></span></button>";
+        '<span class="t-meta">' + t.people.length + (t.people.length === 1 ? " person" : " people") + "</span></div>" +
+        '<div class="t-stub" role="button" tabindex="0" data-act="openTrip" data-id="' + esc(t.id) + '">' +
+        '<span class="t-stub-label">Spent</span><span class="t-total">' + esc(money(total, t.currency)) + "</span></div></div>";
     }).join("") + "</div>";
     return h;
   }
@@ -1115,8 +1120,7 @@
       '<div class="row2"><label class="field"><span>Currency</span><select id="sCur">' + currencyOptions(t.currency) + '</select></label>' +
       '<label class="field"><span>Daily budget</span><input id="sBud" type="number" inputmode="decimal" min="0" step="any" placeholder="None" value="' + (t.budget > 0 ? t.budget : "") + '"></label></div>' +
       '<p class="err" id="sErr" role="alert"></p><button class="btn full" type="button" id="sGo">Save changes</button>' +
-      '<button class="btn ghost full" type="button" id="sExport">Export Expenses (CSV)</button>' +
-      (isOwner(t) ? '<button class="btn ghost full" type="button" id="sDel">Delete this trip</button>' : ""),
+      (isOwner(t) ? '<button class="btn ghost full" style="color:var(--over);border-color:var(--over)" type="button" id="sDel">Delete this trip</button>' : ""),
       function () {
         $("sGo").addEventListener("click", async function () {
           var name = $("sName").value.trim();
@@ -1126,28 +1130,137 @@
           var ok = await run(function () { return store.saveTrip(nt); });
           if (ok) { closeSheet(); render(); }
         });
-        
-        var exp = $("sExport");
-        if (exp) exp.addEventListener("click", function() {
-          var it = itemsOf(t.id);
-          var rows = [["Date", "Category", "Amount", "Note", "Place"]];
-          var exps = it.expenses.slice().sort(function(a, b) { return a.ts - b.ts; });
-          exps.forEach(function(e) {
-            rows.push([e.date, e.cat, e.amount, e.note || "", e.place || ""]);
-          });
-          var csv = rows.map(function(r) { return r.map(function(c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(","); }).join("\n");
-          var blob = new Blob([csv], { type: "text/csv" });
-          var a = document.createElement("a");
-          a.href = URL.createObjectURL(blob);
-          a.download = t.name.replace(/\s+/g, "_") + "_Expenses.csv";
-          a.click();
-        });
 
         var del = $("sDel");
         if (del) del.addEventListener("click", async function () {
           if (!armed) { armed = true; del.textContent = "Tap again to delete for everyone"; del.classList.remove("ghost"); del.classList.add("danger"); return; }
           var ok = await run(function () { return store.deleteTrip(t.id); });
           if (ok) { closeSheet(); S.view = "home"; S.tripId = null; render(); toast("Trip deleted."); }
+        });
+      });
+  }
+
+  function sheetShare(t) {
+    openSheet("Share & Export",
+      '<p class="muted" style="margin-bottom:12px;font-size:0.9rem">Share details for ' + esc(t.name) + '.</p>' +
+      '<button class="btn ghost full" style="margin-bottom:10px;border-color:var(--line)" type="button" id="sCopyWa">📋 Copy WhatsApp Summary</button>' +
+      '<button class="btn ghost full" style="margin-bottom:10px;border-color:var(--line)" type="button" id="sExportHTML">🎨 Download Beautiful Report</button>' +
+      '<button class="btn ghost full" style="margin-bottom:24px;border-color:var(--line)" type="button" id="sExportCsv">📊 Download Data (CSV)</button>',
+      function () {
+        var it = itemsOf(t.id);
+        var total = sum(it.expenses);
+        var n = t.people.length || 1;
+        var r = settle(t.people, it.contribs, total);
+        var cur = t.currency;
+
+        var wa = $("sCopyWa");
+        if (wa) wa.addEventListener("click", function() {
+          var txt = "🌴 *" + t.name + " Trip Summary*\n";
+          txt += "💰 Total Spent: " + money(total, cur) + "\n";
+          txt += "👥 People: " + n + "\n";
+          txt += "👤 Per Person: " + money(r.share, cur) + "\n\n";
+
+          if (r.transfers.length > 0) {
+            txt += "*💸 Settle Up:*\n";
+            r.transfers.forEach(function(x) {
+              var a = personById(t, x.from), b = personById(t, x.to);
+              txt += "🔸 " + (a ? pname(a) : "?") + " pays " + (b ? pname(b) : "?") + ": " + money(x.amt, cur) + "\n";
+            });
+          } else {
+            txt += "*💸 Settlements:*\nEveryone is fully settled up! 🎉\n";
+          }
+
+          navigator.clipboard.writeText(txt).then(function() {
+            toast("Summary copied! Paste it in WhatsApp.");
+            closeSheet();
+          }).catch(function() {
+            toast("Couldn't copy to clipboard.");
+          });
+        });
+
+        var expH = $("sExportHTML");
+        if (expH) expH.addEventListener("click", function() {
+          var html = '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">' +
+            '<meta name="viewport" content="width=device-width, initial-scale=1">' +
+            '<title>' + esc(t.name) + ' Report</title>' +
+            '<style>' +
+            'body{background:#E6F1F1;font-family:system-ui,sans-serif;padding:20px;color:#0F2438;line-height:1.5}' +
+            '.card{background:#fff;max-width:640px;margin:0 auto;padding:30px;border-radius:24px;box-shadow:0 10px 30px rgba(15,36,56,0.1)}' +
+            'h1{margin:0;font-size:2.2rem}' +
+            '.badge{display:inline-block;background:#0E7C86;color:#fff;padding:4px 12px;border-radius:99px;font-size:0.85rem;font-weight:bold;margin-bottom:15px}' +
+            '.grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:15px;margin:30px 0}' +
+            '.box{background:#F2F8FA;padding:20px;border-radius:16px;text-align:center;border:1px solid #C3D7D9}' +
+            '.box span{display:block;font-size:0.85rem;color:#47607A;font-weight:600;text-transform:uppercase;margin-bottom:6px}' +
+            '.box strong{display:block;font-size:1.6rem;font-weight:800;color:#0F2438}' +
+            'h2{margin:30px 0 15px;font-size:1.3rem;border-bottom:2px solid #E6F1F1;padding-bottom:10px}' +
+            'table{width:100%;border-collapse:collapse;font-size:0.95rem}' +
+            'th{text-align:left;padding:12px 8px;color:#47607A;font-weight:600;border-bottom:2px solid #C3D7D9}' +
+            'td{padding:14px 8px;border-bottom:1px solid #E6F1F1}' +
+            '.amt{font-weight:bold;text-align:right;font-variant-numeric:tabular-nums}' +
+            '.settle{background:#FFF5E5;padding:16px;border-radius:12px;margin-bottom:10px;display:flex;justify-content:space-between;font-weight:bold}' +
+            '@media print{body{background:#fff;padding:0}.card{box-shadow:none;padding:0}}' +
+            '</style></head><body><div class="card">' +
+            '<span class="badge">Trip Summary</span>' +
+            '<h1>' + esc(t.name) + '</h1>' +
+            '<div class="grid">' +
+            '<div class="box"><span>Total Spent</span><strong>' + esc(money(total, cur)) + '</strong></div>' +
+            '<div class="box"><span>People</span><strong>' + n + '</strong></div>' +
+            '<div class="box"><span>Per Person</span><strong>' + esc(money(r.share, cur)) + '</strong></div>' +
+            '</div>';
+
+          if (r.transfers.length > 0) {
+            html += '<h2>Who Pays Whom</h2>';
+            r.transfers.forEach(function(x) {
+              var a = personById(t, x.from), b = personById(t, x.to);
+              html += '<div class="settle"><span>' + esc(a ? pname(a) : "?") + ' ➡️ ' + esc(b ? pname(b) : "?") + '</span><span class="amt">' + esc(money(x.amt, cur)) + '</span></div>';
+            });
+          }
+
+          html += '<h2>All Expenses</h2><table><thead><tr><th>Date</th><th>Details</th><th style="text-align:right">Amount</th></tr></thead><tbody>';
+          
+          var exps = it.expenses.slice().sort(function(a, b) { return a.ts - b.ts; });
+          exps.forEach(function(e) {
+            var details = "<strong>" + esc(catById(e.cat).label) + "</strong>";
+            if (e.note || e.place) details += "<br><span style='color:#47607A;font-size:0.85rem'>" + esc([e.note, e.place].filter(Boolean).join(" · ")) + "</span>";
+            html += '<tr>' +
+              '<td style="white-space:nowrap;color:#47607A;vertical-align:top">' + esc(dayLabel(e.date)) + '</td>' +
+              '<td style="vertical-align:top">' + details + '</td>' +
+              '<td class="amt" style="vertical-align:top">' + esc(money(e.amount, cur)) + '</td>' +
+              '</tr>';
+          });
+          
+          html += '</tbody></table>' +
+            '<div style="text-align:center;margin-top:40px;color:#9CB3C7;font-size:0.85rem">Generated by Yatra App</div>' +
+            '</div><script>setTimeout(function(){window.print()}, 500);<\/script></body></html>';
+
+          var blob = new Blob([html], { type: "text/html" });
+          var a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = t.name.replace(/\s+/g, "_") + "_Report.html";
+          a.click();
+        });
+
+        var expCsv = $("sExportCsv");
+        if (expCsv) expCsv.addEventListener("click", function() {
+          var rows = [];
+          rows.push(["Trip Name:", t.name]);
+          rows.push(["Total Spent:", total]);
+          rows.push(["Number of People:", n]);
+          rows.push(["Per Person Share:", r.share]);
+          rows.push([]);
+          rows.push(["Date", "Category", "Amount", "Note", "Place"]);
+          
+          var exps = it.expenses.slice().sort(function(a, b) { return a.ts - b.ts; });
+          exps.forEach(function(e) {
+            rows.push([e.date, catById(e.cat).label, e.amount, e.note || "", e.place || ""]);
+          });
+          
+          var csv = rows.map(function(r) { return r.map(function(c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(","); }).join("\n");
+          var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+          var a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = t.name.replace(/\s+/g, "_") + "_Data.csv";
+          a.click();
         });
       });
   }
@@ -1209,6 +1322,7 @@
       case "addContrib": if (t) sheetContrib(t); break;
       case "addPerson": if (t) sheetAddPerson(t); break;
       case "tripSettings": if (t) sheetTripSettings(t); break;
+      case "shareTrip": { var st = tripById(el.getAttribute("data-id")); if (st) sheetShare(st); break; }
       case "closeSheet": closeSheet(); break;
       case "tour": showTour(0); break;
       case "tourSkip": hideTour(); break;
