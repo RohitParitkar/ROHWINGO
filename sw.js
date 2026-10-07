@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rohwingo-ui-v6';
+const CACHE_NAME = 'rohwingo-ui-v7';
 const ASSETS = [
   './',
   'index.html',
