@@ -1226,7 +1226,7 @@
             dates.forEach(function(d) {
               var exps = dayMap[d].sort(function(a, b) { return a.ts - b.ts; });
               var dayTotal = sum(exps);
-              html += '<div class="day-group"><div class="day-head"><span>' + esc(dayLabel(d)) + '</span><span>' + esc(money(dayTotal, cur)) + '</span></div><table><tbody>';
+              html += '<div class="day-group"><div class="day-head"><span style="align-self:center">' + esc(dayLabel(d)) + '</span><span style="font-size:1.2rem; font-weight:900; color:#F2A100">' + esc(money(dayTotal, cur)) + '</span></div><table><tbody>';
               exps.forEach(function(e) {
                 var details = "<strong>" + esc(catById(e.cat).label) + "</strong>";
                 if (e.note || e.place) details += "<br><span style='color:#47607A;font-size:0.85rem'>" + esc([e.note, e.place].filter(Boolean).join(" · ")) + "</span>";
